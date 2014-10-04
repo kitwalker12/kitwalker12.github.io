@@ -1,0 +1,69 @@
+---
+layout: post
+title: Encrypt/Decrypt
+date: 2013-08-14 13:15:50.000000000 -07:00
+comments: true
+categories:
+- Coding
+- Desktop
+tags:
+- c-sharp
+- silverlight
+---
+<p>A while ago I was searching for some code to encrypt/decrypt values for a project in Silverlight. Just going to put the code here so that it may be of help to some poor soul. Following code essentially encrypts using AES. A decrypt function is also added. This is in case one doesn’t want to go the on-way MD5 way.</p>
+<pre>
+<p>using System.Security.Cryptography;<br />
+using System.Text;<br />
+using System.IO;<br />
+using System.Diagnostics;</p>
+<p>public static string Encrypt(string input)<br />
+{<br />
+string data = input;<br />
+byte[] utfdata = UTF8Encoding.UTF8.GetBytes(data);<br />
+byte[] saltBytes = UTF8Encoding.UTF8.GetBytes("addSaltToTaste");<br />
+AesManaged aes = new AesManaged();<br />
+Rfc2898DeriveBytes rfc = new Rfc2898DeriveBytes("thePassword", saltBytes);<br />
+// Setting Encryption parameters<br />
+aes.BlockSize = aes.LegalBlockSizes[0].MaxSize;<br />
+aes.KeySize = aes.LegalKeySizes[0].MaxSize;<br />
+aes.Key = rfc.GetBytes(aes.KeySize / 8);<br />
+aes.IV = rfc.GetBytes(aes.BlockSize / 8);<br />
+// Start Encryption<br />
+ICryptoTransform encryptTransf = aes.CreateEncryptor();<br />
+MemoryStream encryptStream = new MemoryStream();<br />
+CryptoStream encryptor = new CryptoStream(encryptStream, encryptTransf, CryptoStreamMode.Write);<br />
+encryptor.Write(utfdata, 0, utfdata.Length);<br />
+encryptor.Flush();<br />
+encryptor.Close();<br />
+// Output Encrypted Content<br />
+byte[] encryptBytes = encryptStream.ToArray();<br />
+string encryptedString = Convert.ToBase64String(encryptBytes);<br />
+Debug.WriteLine(encryptedString);<br />
+return encryptedString;<br />
+}</p>
+<p>private string Decrypt(string base64Input)<br />
+{<br />
+//byte[] encryptBytes = UTF8Encoding.UTF8.GetBytes(input);<br />
+byte[] encryptBytes = Convert.FromBase64String(base64Input);<br />
+byte[] saltBytes = Encoding.UTF8.GetBytes("addSaltToTaste");<br />
+AesManaged aes = new AesManaged();<br />
+Rfc2898DeriveBytes rfc = new Rfc2898DeriveBytes("thePassword", saltBytes);<br />
+// Set parameters<br />
+aes.BlockSize = aes.LegalBlockSizes[0].MaxSize;<br />
+aes.KeySize = aes.LegalKeySizes[0].MaxSize;<br />
+aes.Key = rfc.GetBytes(aes.KeySize / 8);<br />
+aes.IV = rfc.GetBytes(aes.BlockSize / 8);<br />
+// Start decryption<br />
+ICryptoTransform decryptTrans = aes.CreateDecryptor();<br />
+MemoryStream decryptStream = new MemoryStream();<br />
+CryptoStream decryptor = new CryptoStream(decryptStream, decryptTrans, CryptoStreamMode.Write);<br />
+decryptor.Write(encryptBytes, 0, encryptBytes.Length);<br />
+decryptor.Flush();<br />
+decryptor.Close();<br />
+// Write decrypted content<br />
+byte[] decryptBytes = decryptStream.ToArray();<br />
+string decryptedString = UTF8Encoding.UTF8.GetString(decryptBytes, 0, decryptBytes.Length);<br />
+//Debug.WriteLine(decryptedString);<br />
+return decryptedString;<br />
+}</p>
+</pre>

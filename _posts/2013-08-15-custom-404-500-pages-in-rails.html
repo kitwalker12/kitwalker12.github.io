@@ -1,0 +1,21 @@
+---
+layout: post
+title: Custom 404 & 500 Pages in Rails
+date: 2013-08-15 12:31:40.000000000 -07:00
+comments: true
+categories:
+- Coding
+- Web
+tags:
+- ruby on rails
+---
+<p>This is the implementation of a good tutorial on the subject (<a href="http://ramblinglabs.com/blog/2012/01/rails-3-1-adding-custom-404-and-500-error-pages" target="_blank">found here</a>)</p>
+<p>Adding this functionality is not as easy as one would think and requires some meddling around with the application controller and routes.</p>
+{% gist 6243865 %}
+<p>You can now redirect to the 404 error in your actions</p>
+<pre>
+<p>def show<br />
+@post = Post.published.where(slug: params[:slug]).all.first || not_found<br />
+end</p>
+</pre>
+<p>Remove the <code>Rails.application.config.consider_all_requests_local</code> condition from both the <code>config/routes.rb</code> and the <code>app/controllers/application_controller.rb</code> files if you want to test them in development.</p>

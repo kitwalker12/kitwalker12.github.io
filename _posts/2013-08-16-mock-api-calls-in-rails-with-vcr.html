@@ -1,0 +1,21 @@
+---
+layout: post
+title: Mock API calls in Rails with VCR
+date: 2013-08-16 12:00:21.000000000 -07:00
+comments: true
+categories:
+- Coding
+- Web
+tags:
+- rspec
+- ruby on rails
+- vcr
+---
+<p>I work with external APIs in my application and need a reliable way of testing how my code handles those API responses. The <a href="https://github.com/vcr/vcr">VCR</a> gem provides a great way to that in a contextual fashion.</p>
+<p>Add this file</p>
+<pre>support/vcr.rb</pre>
+<p>and a directory named</p>
+<pre>vcr</pre>
+<p>to your rspec directory and implement the following gist:</p>
+{% gist 6245012 %}
+<p>When you run your spec for the first time, VCR creates a new file under the vcr directory with the cassette name you specified. On the next call, this data will be used for mocking your API response.</p>

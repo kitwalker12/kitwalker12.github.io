@@ -1,0 +1,30 @@
+---
+layout: post
+title: WP hates emails (or the WP email blue outline bug)
+date: 2014-03-05 17:12:55.000000000 -08:00
+comments: true
+categories:
+- Coding
+- Mobile
+- Web
+tags:
+- email
+- html
+- mobile
+- wp8
+---
+<p>Just a little rant I need to do. I was trying to write an HTML email (you know, the beyond ugly ones with tables and tables within tables and inline styles). All was going well, when I saw that on my Windows Phone, all my images which were links had a blue border around them.</p>
+<p style="text-align: center;"><img class="size-medium wp-image-112 aligncenter" alt="screeshot" src="../assets/wp_ss_20140305_0001-259x300.png" width="259" height="300" /></p>
+<p>I looked around for a solution, and sure enough dozens of users had the same problem. The fix was (supposed to be) simple. Just put a</p>
+<pre>
+  <p>border: none;</p>
+  <p>outline: none;</p>
+</pre>
+<p>on the image. Ofcourse, that didn't help. I tried inlining that into the a tag, the img tag, the outer td, tr &amp; table but nothing worked.</p>
+<p>Finally <a href="http://stackoverflow.com/a/16178193/1013444" target="_blank">this comment at stackoverflow</a> helped me out. Apparently "IE adds a border around images if they’re the child of an anchor". So adding</p>
+<pre>
+<p>a img {</p>
+<p>border: none;</p>
+<p>}</p>
+</pre>
+<p>in the css fixed it. Goddamn you IE for mobile...Goddamn you.</p>

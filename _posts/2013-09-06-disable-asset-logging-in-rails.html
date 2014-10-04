@@ -1,0 +1,19 @@
+---
+layout: post
+title: Disable Asset Logging in Rails
+date: 2013-09-06 22:06:17.000000000 -07:00
+comments: true
+categories:
+- Coding
+- Web
+tags:
+- logging
+- ruby on rails
+---
+<p>I for one got tired of seeing the css &amp; js GET messages in my rails log till my colleague found a way around it. To disable them once and for all in development environment just add the following to your Gemfile, run 'bundle install' and run your server. No more asset logging in development. If you're not using the asset pipeline, then you can add it to the production group as well.</p>
+<pre>
+<p>group :development do<br />
+gem 'disable_assets_logger'<br />
+gem 'webrick', '1.3.1'<br />
+end</p>
+</pre>

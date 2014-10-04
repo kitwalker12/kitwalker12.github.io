@@ -1,0 +1,23 @@
+---
+layout: post
+title: On Testing
+date: 2014-04-30 11:33:45.000000000 -07:00
+comments: true
+categories:
+- Coding
+- Web
+tags:
+- dhh
+- TDD
+- testing
+---
+<p>DHH’s <a href="http://david.heinemeierhansson.com/2014/tdd-is-dead-long-live-testing.html">rant</a> has been one of the most polarizing articles published in the recent months (even though there are 100’s of ‘X is dead’ articles on HN everyday). If this article was something new from DHH, I would’ve given it more thought, but recently his crusades against people trying to implement SRP in the increasingly complex world of skinny controllers, fat models &amp; concerns have made me incline towards his advice less so. His advice in this article is definitely good once you get past the anger issues (essentially focusing on model tests, controller tests and then feature tests), but as his recent comments on concepts of <a href="http://eng.joingrouper.com/blog/2014/03/20/rails-the-missing-parts-policies/">Policies</a> &amp;  <a href="http://eng.joingrouper.com/blog/2014/03/03/rails-the-missing-parts-interactors">Interactors</a> in Rails show, he’s coming from a view that testing is not essential for a coder who’s as good as him. </p>
+<p>Personally, I find the value of unit tests not as much is in building robust code, but more in building clean code. A unit test forces me to think about decoupling which helps down the line when requirements change and you have to throw coupled code out the window, essentially Repeating Yourself. If your module is not testable, that’s just another word for &#39;tangled up with dependancies&#39; and probably violates SRP. I’m not saying that it’s something one should be ashamed of (which somehow DHH feels, is a given), but it’s something that only Unit testing can help sort out. TDD is never a wholesale substitute for thinking about the design of your software, so it’s misleading to argue against that idea as if it’s representative. TDD will only lead to better design and discipline (it’s the same thing that can be inferred from <a href="http://blog.8thlight.com/uncle-bob/2014/04/25/MonogamousTDD.html">Uncle Bob’s article</a>. </p>
+<p>My point can be summarized in a single sentence which I read <a href="http://codon.com/how-testability-can-help">elsewhere</a>: </p>
+<blockquote>
+<p>&quot;Being testable doesn’t make an architecture good, but good architectures tend to be easier to test”. </p>
+</blockquote>
+<p>Lastly, DHH’s article violates the most important tenet of ruby programming: </p>
+<blockquote>
+<p>‘Matz is nice, so we are nice’</p>
+</blockquote>

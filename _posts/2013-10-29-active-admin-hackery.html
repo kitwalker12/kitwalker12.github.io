@@ -1,0 +1,55 @@
+---
+layout: post
+title: Active Admin Hackery
+date: 2013-10-29 17:49:09.000000000 -07:00
+comments: true
+categories:
+- Coding
+- Web
+tags:
+- active admin
+- ruby on rails
+---
+<p>A few tips on customizing <a href="http://www.activeadmin.info/">ActiveAdmin</a>, the Ruby on Rails Admin Framework.</p>
+<p><!--more--></p>
+<h2>Customizing the Index Page:</h2>
+<p>If you have customized the index page, you might want to get back links to the object which was previously linked by the ID field. You can do that like this:</p>
+<pre>
+ActiveAdmin.register Post do<br />
+  index do<br />
+    selectable_column<br />
+    column :name do |post|<br />
+      link_to post.name, admin_post_path(post)<br />
+    end<br />
+    column :author<br />
+    #...<br />
+  end<br />
+end<br />
+</pre>
+<h2>Customizing the show page:</h2>
+<p>You can have tables for related models within a show page like this:</p>
+<pre>
+show do<br />
+  attributes_table do<br />
+    row :title<br />
+    #...<br />
+  end</p>
+<p>  panel :comments do<br />
+    table_for post.comments do<br />
+      column :body<br />
+      #...<br />
+    end<br />
+  end<br />
+end<br />
+</pre>
+<h2> Custom Column with links to multiple actions:</h2>
+<p>In a similar situation, you may want to add custom links to the earlier panel. You can do that in the following way:</p>
+<pre>
+column "Actions" do |comment|<br />
+  text_node link_to "View", admin_comment_path(comment)<br />
+  text_node "&nbsp".html_safe<br />
+  text_node link_to "Edit", edit_admin_comment_path(comment)<br />
+  text_node "&nbsp".html_safe<br />
+  text_node link_to "Delete", delete_comment_admin_page_path(page, :comment => content_item.id), :method => 'delete'<br />
+end<br />
+</pre>

@@ -1,0 +1,18 @@
+---
+layout: post
+title: Clever Sitemap Generation in Rails
+date: 2013-08-24 00:09:52.000000000 -07:00
+comments: true
+categories:
+- Coding
+- Web
+tags:
+- carrierwave
+- ruby on rails
+- sidekiq
+- sitemap
+- whenever
+---
+<p>There are a lot of sitemap tutorials for rails out there. My current project required a different approach for this as we didn't want our app controller clogged by requests from a spider gone awry. So my boss suggested this cool way of generating the sitemap outside of a regular sitemap controller. We created a <a href="https://github.com/mperham/sidekiq">sidekiq</a> job using that creates the sitemap and uploads it to a CDN.</p>
+{% gist 6326564 %}
+<p>The Sitemap controller works this way because spiders reject sitemap stored offsite. The Sidekiq job can be run on a weekly or daily basis using the '<a href="https://github.com/javan/whenever">whenever</a>' gem. I used the '<a href="https://github.com/carrierwaveuploader/carrierwave">carrierwave</a>' gem for uploading the sitemap to S3.</p>

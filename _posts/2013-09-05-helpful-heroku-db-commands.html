@@ -1,0 +1,29 @@
+---
+layout: post
+title: Helpful Heroku db commands
+date: 2013-09-05 11:49:23.000000000 -07:00
+comments: true
+categories:
+- Coding
+- Database
+- Web
+tags:
+- heroku
+- ruby on rails
+---
+<p>Just gonna keep some of these commands here for posterity. You can easily reset or partially reset your local tables/database or staging database by using these commands.</p>
+<pre>
+<p>#Might have to install taps and sqlite3</p>
+<p>sudo gem install taps</p>
+<p>sudo gem install sqlite3</p>
+<p>#Push your local database up to Heroku</p>
+<p>heroku db:push</p>
+<p>#Pull from Heroku to your local database</p>
+<p>heroku db:pull</p>
+<p>#Pull specific table</p>
+<p>heroku db:pull --tables &lt;comma_separated_table_names&gt;</p>
+<p>#If an interruption occurs, taps will dump a session file which can be used to resume the transfer</p>
+<p>heroku db:pull --resume-filename &lt;session_file_name&gt;.dat</p>
+<p>#Update your local schema from local database after pulling from heroku</p>
+<p>rake db:schema:dump</p>
+</pre>

@@ -1,0 +1,138 @@
+---
+layout: post
+title: Rspec Karma (or How rspec ruined my day)
+date: 2013-11-21 13:44:03.000000000 -08:00
+comments: true
+categories:
+- Coding
+- Web
+tags:
+- active admin
+- rspec
+- ruby on rails
+---
+<p>I'm a RoR developer and recently was working on implementing an image manipulation feature in our app. I've gotten into the habit of TDD and naturally I started out by developing tests for my new class that'll handle the features.</p>
+<p>This is what my test looked like in <code>spec/lib/image_publisher_spec.rb</code></p>
+<pre><code>require "spec_helper"
+
+describe ImagePublisher do
+
+  let(:ip) { ImagePublisher.new }
+
+  describe "#validate" do
+    #...
+  end
+  #...
+end
+</code></pre>
+<p>and I put the actual library in <code>lib/image_publisher.rb</code></p>
+<pre><code>class ImagePublisher
+  attr_accessor #...
+
+  def initialize
+      #...
+  end
+
+  def validate(path)
+    #...
+  end
+end
+</code></pre>
+<p>After developing some tests and implementing the features I had <code>rspec spec/lib/image_publisher_spec.rb</code> passing. Confident in my abilities, I ran the whole suite with <code>rspec</code> and was met with the first shocker of the day. My new test was passing fine but another feature spec I had written earlier was failing at the <code>before (:each)</code> level with the error:</p>
+<pre><code>ActionController::RoutingError:
+      uninitialized constant AdminDashboardController
+</code></pre>
+<p>To clarify, I'm using <a href="http://www.activeadmin.info/">Active Admin</a> (which incidentally hasn't been my staunchest ally in my conversion to Rails 4) and spec which started failing suddenly was this:</p>
+<pre><code>    #spec/features/publish_flow_spec.rb
+require "spec_helper"
+
+feature "Publish Flow" do
+
+  let(:admin_user) { FactoryGirl.create(:admin_user) }
+
+  before(:each) do
+    sign_in_user admin_user
+  end
+
+  def sign_in_user(user)
+    visit root_path
+    fill_in 'admin_user_email', with: user.email
+    fill_in 'admin_user_password', with: user.password
+    click_button 'Login'
+  end
+
+  describe "some feature" do
+      it "does something" do
+          #...
+      end
+  end
+end
+</code></pre>
+<p>The failure point was the line <code>visit root_path</code> and it appears the runtime couldn't find <code>Admin::DashboardController</code> as it seemed to be interpreting it as <code>AdminDashboardController</code>. What was weird was that running <code>rspec spec/features/publish_flow_spec.rb</code> didn't produce any errors and passed like it did before.</p>
+<p>Quickly googling the error, I found many users facing the same dilemma and I tried the fixes they offered one by one. Here's my account.</p>
+<p><!--more--></p>
+<h3 id="tryingfix1httpstackoverflowcomquestions17050740activeadminuninitializedconstantadmindashboardcontroller"><a href="http://stackoverflow.com/questions/17050740/active-admin-uninitialized-constant-admindashboardcontroller">Trying Fix #1</a></h3>
+<p>My gem file looked something like this.</p>
+<pre><code>source 'https://rubygems.org'
+ruby "2.0.0"
+
+gem 'rails', '4.0.0'
+
+gem 'pg'
+
+    #...
+gem 'activeadmin', :github =&gt; 'gregbell/active_admin'
+    #...
+</code></pre>
+<p>and the routes like this</p>
+<pre><code>MyApp::Application.routes.draw do
+  root :to =&gt; 'admin/dashboard#index'
+  devise_for :admin_users, ActiveAdmin::Devise.config
+  ActiveAdmin.routes(self)
+end
+</code></pre>
+<p>I moved the root definition above ActiveAdmin's definition but that didn't help. I even tried specifying my name space by <code>config.default_namespace = :admin</code> even though I was using the default namespace already, but it still didn't stop the old spec from failing.</p>
+<h3 id="tryingfix2httpsgithubcomgregbellactive_adminissues787"><a href="https://github.com/gregbell/active_admin/issues/787/">Trying Fix #2</a></h3>
+<p>It seemed it may be an active admin issue, and I tried the fix specified in a related github issue. Sadly, specifying <code>config.cache_classes = true</code> in my <code>application.rb</code> didn't resolve the failing test either.</p>
+<h3 id="tryingfix345">Trying Fix #3, #4, #5....</h3>
+<p>At this point I'd played around with enabling and disabling various permutations of config variables in <code>application.rb</code>, <code>test.rb</code> &amp; <code>active_admin.rb</code> and after spending a couple of hours, nothing seemed to work. I just couldn't understand why the test would fail when run with the whole suite and not when run independently.</p>
+<p>I even tried specifying different routes (which were valid because I could see them at <code>http://localhost:3000/rails/info/routes</code>) in the <code>sign_in_user</code> function but they all failed with routing errors.</p>
+<p>I also thought maybe the test db was at fault but running <code>rake db:test:prepare</code> didn't solve anything.</p>
+<h3 id="tryingfix4">Trying Fix #4</h3>
+<p>I decided to go back to a working commit which had passed all the tests before I added my new class. Here, the test seemed to work fine when run as a whole. I figured it had something to do with the <code>ImagePublisher</code> class I had recently created. I moved back to the most recent commit and removed <code>rspec spec/lib/image_publisher_spec.rb</code> and VOILA, the whole suite is passing again.</p>
+<h3 id="whatfixedit">What fixed it?</h3>
+<p>Now I knew that something was wrong with the new test that I had written but couldn't figure out how it was meddling with a completely unrelated test. I decided to go back to the basics and searched for a tutorial on how to write spec tests for a class in the <code>lib</code> folder.</p>
+<p>An example listed at <a href="http://net.tutsplus.com/tutorials/ruby/ruby-for-newbies-testing-with-rspec/">this site</a> gave this example:</p>
+<pre><code>require 'spec_helper'
+
+describe "Library object" do
+
+    before :all do
+        lib_obj = [
+            Book.new("JavaScript: The Good Parts", "Douglas Crockford", :development),
+            Book.new("Designing with Web Standards", "Jeffrey Zeldman", :design),
+            Book.new("Don't Make me Think", "Steve Krug", :usability),
+            Book.new("JavaScript Patterns", "Stoyan Stefanov", :development),
+            Book.new("Responsive Web Design", "Ethan Marcotte", :design)
+        ]
+        File.open "books.yml", "w" do |f|
+            f.write YAML::dump lib_obj
+        end
+    end
+
+    before :each do
+        @lib = Library.new "books.yml"
+    end
+
+end
+</code></pre>
+<p>Hmmm...I don't know what I'm doing different but all I see is that the main describe block name as encapsulated in quotes. So that's what I decided to do:</p>
+<pre><code>Diff
+-describe ImagePublisher do
++describe "ImagePublisher" do
+</code></pre>
+<p>Ran <code>rspec</code> and ALL THE TESTS PASSED!!!</p>
+<p>Now, I have no clue why rspec was passing the classes' test and failing an unrelated test just because a describe block was named how it should be named. I had other tests named similarly for files in <code>spec/lib</code>, but the only difference there was that they were inside module folders and named with the namespace of that module, while this test wasn't.</p>
+<p>Anyhoo, this weird test fixed my woes, but I'd be glad if someone can tell me what I was doing wrong in the first place by not putting the describe block title in quotes. OR, you can tell me where I can find <a href="http://en.wikipedia.org/wiki/Occam's_razor">Occam</a> so I can kill him. Till then, I'll chalk this one up as cosmic karma.</p>
+<p>&nbsp;</p>
+<p><strong>Update</strong>: I figured out why all this happened. In the ImagePublisher class, I had extended the string class by doing a "Class String" instead of "String.class_eval", which basically FUBARed any other string functions elsewhere.</p>
