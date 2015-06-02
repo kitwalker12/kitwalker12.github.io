@@ -1,0 +1,67 @@
+==================================================================
+https://keybase.io/kitwalker
+--------------------------------------------------------------------
+
+I hereby claim:
+
+  * I am an admin of http://adityar.com
+  * I am kitwalker (https://keybase.io/kitwalker) on keybase.
+  * I have a public key with fingerprint 82F3 9BCA 0175 E438 C204  B2B1 0ED9 9E9C 1CDA 59BB
+
+To do so, I am signing this object:
+
+{
+    "body": {
+        "key": {
+            "fingerprint": "82f39bca0175e438c204b2b10ed99e9c1cda59bb",
+            "host": "keybase.io",
+            "key_id": "0ed99e9c1cda59bb",
+            "kid": "0101639dd4f357057c5fea0367a4230ea135c3fa9b79a65643eb57479f271b1406e10a",
+            "uid": "853e70137d08576a0d236486cd56ce19",
+            "username": "kitwalker"
+        },
+        "service": {
+            "hostname": "adityar.com",
+            "protocol": "http:"
+        },
+        "type": "web_service_binding",
+        "version": 1
+    },
+    "ctime": 1433275784,
+    "expire_in": 157680000,
+    "prev": "34cb86c73d3750679a3d95ace3c3a89e36d2bcec28a83392d48354a935be0cff",
+    "seqno": 5,
+    "tag": "signature"
+}
+
+which yields the signature:
+
+-----BEGIN PGP MESSAGE-----
+Version: Keybase OpenPGP v2.0.8
+Comment: https://keybase.io/crypto
+
+yMIhAnicbVJbSBRRGN61m0mBRQ8phTQPUWRxZs6cOTObpV2gQFo2ukFp25kzZ3TY
+2llnZ1cXkyKiC0Sg3RAqMosUK/elEovS3CApMgt6iC70oLHZha4ERXam7K3zcjjf
+/33f+f6fPzN1nC/PX7q0T/76dK/sv9dblvBtiE49UC/otpESAvVChP25TCtaxZyY
+Y0VdISCokgk1nRIgYsRkqFIJyLqki4AZmsY0KlKDIE3XhWKh2o57Cm6jkzhbZNkc
+44+wZXD0P/zI34IIRAVqhiGbEGGAMEUmIwAqmMgSBIyIEFFoEk3HGlGQIkOmIyxj
+zZSwqIsyUJgICLdL/LFTEWQYiBAbQEVYIcCQoCKrCjWQQpmoecQ4c6JkB/OyWm4t
+2R5hjtBQLHA4aVHmzcBrZYxCDMtNEWcRtXdwbcyxXZva23mh2nVjAU/npmIesZbp
+4TGLsG5FDT5GLkgyJ27ZUSEgciZ1Lc9TlCGUMMKqXCywupjlsLDlMXheFfDjfcOS
+3BLKVOfRMTQgRkDhA4CGhghlkEKiagwqhqRTRiWVqBBqkiGrEMlEg0hngJqm4DVV
+E7WFAOIxSRW3jFtVUeImHCY03O6pGO/z5/kmTsjxFsGXNzn/33qkOnJ9d4esmsfD
+x0690oYXvBksuweLDs8JxVZOXPPhaDPsXbDWX7rihK9r84/s0XLcvKVm+duuxEhD
+urG06f203V8K9relzwZbrr82y5XFM2fOPZIN9dwKzRv5bn+ecrX20bX8ouCT9MCM
+DzsXNo4GVw29G07a1sdZgcLuF1vVi9dyQTC0cN8bp7AlM5rYdn4bvrznU1HpzYrZ
+1ZGTbfO6SkKblvwyS8zQ6PHVr6c8unDwjJD5+WBkcjZSceJ9yKw7xzr3r09eefg4
+2N5cd7q1rH9rzrcbL3u/ZwsLlp1+t6Gye/f0/I3rOvsGVja1F7TGL9WXP688ZPSj
++x3r0mfn77ozadDtzDz7DephLEQ=
+=mfod
+-----END PGP MESSAGE-----
+
+And finally, I am proving ownership of this host by posting or
+appending to this document.
+
+View my publicly-auditable identity here: https://keybase.io/kitwalker
+
+==================================================================
