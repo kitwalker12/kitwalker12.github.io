@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Pub/Sub with Go-Micro
-date: 2017-04-014 00:00:00 -07:00
+date: 2017-04-14 00:00:00 -07:00
 comments: true
 ---
 
