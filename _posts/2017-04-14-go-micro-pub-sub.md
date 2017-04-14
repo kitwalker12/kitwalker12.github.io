@@ -130,7 +130,7 @@ services:
 
 If you prefer to not use environment variables for setting the rabbitmq address or exchange value, you can do it on the code by instantiating a new rabbitmq broker like this
 
-```
+{% highlight go %}
 r := rabbitmq.NewBroker(micro.Addrs("amqp://admin:password@rabbit:5672/"))
 //For setting exhange do
 r := rabbitmq.NewBroker(
@@ -138,4 +138,4 @@ r := rabbitmq.NewBroker(
 )
 //Or
 rabbitmq.DefaultExchange = "foo"
-```
+{% endhighlight %}
