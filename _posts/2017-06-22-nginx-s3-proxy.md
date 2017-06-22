@@ -12,6 +12,8 @@ I already had a maintenance page designed and uploaded to S3 as a static website
 
 In the nginx conf I made sure that all requests going to my-domain.com would get redirected to the maintenance page on S3. Also, as the assets (images/css/js) were stored in a folder next to the html file, those requests would need to be directed to the S3 asset path. I also added a directive to redirect to the nginx error page instead of the S3 Access Denied page in case a forbidden asset was accessed.
 
+Now all one needs to do is temporarily point the CNAME of the site URL from the beanstalk server to the EC2 Nginx Proxy server.
+
 [Here is the conf file](https://gist.github.com/kitwalker12/acb51edce10481a375d409175fbb31c3):
 
 {% gist acb51edce10481a375d409175fbb31c3 %}
