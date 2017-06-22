@@ -7,7 +7,7 @@ description: > # this means to ignore newlines until "baseurl:"
 url: "http://adityar.com" # the base hostname & protocol for your site
 twitter_username: royalgoombah
 github_username:  kitwalker12
-gems: [jekyll-gist, jekyll-paginate]
+plugins: [jekyll-gist, jekyll-paginate]
 
 # Build settings
 markdown: kramdown
